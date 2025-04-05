@@ -14,7 +14,7 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
-// Signup
+
 app.post("/signup", async (req, res) => {
   const email = req.body.email.trim().toLowerCase();
   const password = req.body.password;
@@ -32,7 +32,6 @@ app.post("/signup", async (req, res) => {
   }
 });
 
-// Login
 app.post("/login", async (req, res) => {
   const email = req.body.email.trim().toLowerCase();
   const password = req.body.password;
@@ -52,7 +51,6 @@ app.post("/login", async (req, res) => {
   }
 });
 
-// BMI
 app.post("/bmi", async (req, res) => {
   const { email, weight, height } = req.body;
 
