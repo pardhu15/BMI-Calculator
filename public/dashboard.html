@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h2>BMI Calculator</h2>
+    <input type="number" id="weight" placeholder="Weight (kg)">
+    <input type="number" id="height" placeholder="Height (cm)">
+    <button id="calculateBtn">Calculate BMI</button>
+    <p id="result"></p>
+    <button id="logoutBtn">Logout</button>
+  </div>
+
+  <script>
+    const email = localStorage.getItem("email");
+  
+    document.getElementById("calculateBtn").addEventListener("click", async () => {
+      const weight = parseFloat(document.getElementById("weight").value);
+      const height = parseFloat(document.getElementById("height").value);
+  
+      if (!weight || !height) {
+        alert("Enter both weight and height.");
+        return;
+      }
+  
+      const res = await fetch("/bmi", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, weight, height })
+      });
+  
+      const data = await res.json();
+      const bmi = parseFloat(data.bmi);
+      let status = "";
+  
+      if (bmi < 18.5) {
+        status = "Underweight";
+      } else if (bmi >= 18.5 && bmi < 25) {
+        status = "Normal weight";
+      } else if (bmi >= 25 && bmi < 30) {
+        status = "Overweight";
+      } else {
+        status = "Obese";
+      }
+  
+      document.getElementById("result").innerHTML = `Your BMI is <strong>${bmi}</strong><br>Status: <strong>${status}</strong>`;
+    });
+  
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      localStorage.removeItem("email");
+      window.location.href = "/";
+    });
+  </script>
+  
+</body>
+</html>
